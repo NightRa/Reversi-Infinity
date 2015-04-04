@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.support.v7.widget.GridLayout
 import android.util.DisplayMetrics
+import android.widget.TextView
 import nightra.reversi.app.R
 import nightra.reversi.control.Game
 import nightra.reversi.image.Images
@@ -23,7 +24,10 @@ class MainActivity extends Activity {
     val size = squareSize() / 8
     val bitmaps = loadBitmaps(size)
 
-    gameUI = new GameUI(this, bitmaps, grid, 8, () => (), callback => runOnUiThread(new Runnable {
+    val whiteScore = findViewById(R.id.whiteScore).asInstanceOf[TextView]
+    val blackScore = findViewById(R.id.blackScore).asInstanceOf[TextView]
+
+    gameUI = new GameUI(this, bitmaps, whiteScore, blackScore, grid, 8, () => (), callback => runOnUiThread(new Runnable {
       override def run(): Unit = callback()
     }))
 

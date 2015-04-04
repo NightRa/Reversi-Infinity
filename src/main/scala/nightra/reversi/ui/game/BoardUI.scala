@@ -2,10 +2,9 @@ package nightra.reversi.ui.game
 
 import android.content.Context
 import android.support.v7.widget.GridLayout
-import android.util.Log
 import android.view.View
 import nightra.reversi.model._
-import rx.core.{Obs, Var, Rx}
+import rx.core.Rx
 
 class BoardUI(ctx: Context, bitmaps: Bitmaps, grid: GridLayout, boardProp: Rx[Board], boardSize: Int, squareClicked: Position => Unit) {
   val tiles: Rx[Array[Array[SquareState]]] = Rx {

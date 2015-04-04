@@ -2,13 +2,14 @@ package nightra.reversi.ui.game
 
 import android.content.Context
 import android.support.v7.widget.GridLayout
+import android.widget.TextView
 import nightra.reversi.control.{ExecutionError, InternalError}
 import nightra.reversi.model._
-import rx.core.Var
+import rx.core.{Obs, Rx, Var}
 
 import scalaz.concurrent.Future
 
-class GameUI(val ctx: Context, bitmaps: Bitmaps, grid: GridLayout, boardSize: Int, returnToMainMenu: () => Unit, val onUI: (() => Unit) => Unit) {
+class GameUI(val ctx: Context, bitmaps: Bitmaps, whiteScore: TextView, blackScore: TextView, grid: GridLayout, boardSize: Int, returnToMainMenu: () => Unit, val onUI: (() => Unit) => Unit) {
   val boardProp: Var[Board] = Var(Board.initialBoard(boardSize))
 
   var playCallback: Option[Position => Unit] = None
@@ -20,6 +21,15 @@ class GameUI(val ctx: Context, bitmaps: Bitmaps, grid: GridLayout, boardSize: In
           playCallback = Some(callback)
         }
     }
+
+  private val score = Obs(boardProp) {
+    updateScore(boardProp().whites, boardProp().blacks)
+  }
+
+  def updateScore(whites: Int, blacks: Int): Unit = {
+    whiteScore.setText(whites.toString)
+    blackScore.setText(blacks.toString)
+  }
 
   def reportWinner(endGame: EndGame, blacks: Int, whites: Int): Unit = {
     // TODO: Report winner
@@ -44,7 +54,7 @@ class GameUI(val ctx: Context, bitmaps: Bitmaps, grid: GridLayout, boardSize: In
         case White => s"$whites-$blacks"
       }
       s"$winner won $score"
-    case Tie => s"Tie $blacks-$whites"  
+    case Tie => s"Tie $blacks-$whites"
   }
 
   def reportError(error: ExecutionError): Unit = error match {
