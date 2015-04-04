@@ -6,8 +6,8 @@ object AlphaBeta {
   def reversiAlphaBeta(board: Board, depth: Int): (Float, Option[(Move, Board)]) =
     alphaBeta(board, depth, Float.NegativeInfinity, Float.PositiveInfinity)
 
-  def maximize(children: => Stream[(Move, Board)], alpha: Float, beta: Float, eval: (Board, Float, Float) => Float): (Float, (Move, Board)) = {
-    def goMaximize(children: Stream[(Move, Board)], max: (Move, Board), alpha: Float): (Float, (Move, Board)) = {
+  def maximize(children: Array[(Move, Board)], alpha: Float, beta: Float, eval: (Board, Float, Float) => Float): (Float, (Move, Board)) = {
+    def goMaximize(children: Array[(Move, Board)], max: (Move, Board), alpha: Float): (Float, (Move, Board)) = {
       if (beta <= alpha || children.isEmpty) (alpha, max)
       else {
         val (moveChild, child) = children.head
@@ -20,8 +20,8 @@ object AlphaBeta {
     res
   }
 
-  def minimize(children: => Stream[(Move, Board)], alpha: Float, beta: Float, eval: (Board, Float, Float) => Float): (Float, (Move, Board)) = {
-    def goMinimize(children: Stream[(Move, Board)], min: (Move, Board), beta: Float): (Float, (Move, Board)) = {
+  def minimize(children: Array[(Move, Board)], alpha: Float, beta: Float, eval: (Board, Float, Float) => Float): (Float, (Move, Board)) = {
+    def goMinimize(children: Array[(Move, Board)], min: (Move, Board), beta: Float): (Float, (Move, Board)) = {
       if (beta <= alpha || children.isEmpty) (beta, min)
       else {
         val (moveChild, child) = children.head

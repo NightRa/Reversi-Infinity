@@ -12,7 +12,7 @@ object Streams {
   // This one is tail recursive because of lazyness :) -- That's awesome.
   def collectStream[A, B](stream: => Stream[A])(f: A => Option[B]): Stream[B] = stream match {
     case Stream.Empty => Stream.empty
-    case x #:: xs => f(x) match {
+    /*allocation*/ case x #:: xs => f(x) match {
       case None => collectStream(xs)(f)
       case Some(b) => b #:: collectStream(xs)(f)
     }

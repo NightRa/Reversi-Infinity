@@ -56,7 +56,7 @@ class GameUI(val ctx: Context, bitmaps: Bitmaps, grid: GridLayout, boardSize: In
     playCallback match {
       case None => ()
       case Some(callback) =>
-        if (boardProp().place(pos).isDefined) {
+        if (boardProp().place(pos.row, pos.col).isDefined) {
           playCallback = None
           callback(pos)
         } else {

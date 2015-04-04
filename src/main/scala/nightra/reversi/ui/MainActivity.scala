@@ -27,7 +27,7 @@ class MainActivity extends Activity {
       override def run(): Unit = callback()
     }))
 
-    val gameType = GameType(8, HumanPlayer, LocalComputerPlayer(AIType(3, AlphaBeta, Imperative)))
+    val gameType = GameType(8, HumanPlayer, LocalComputerPlayer(3))
 
     Future(Game.startGame(gameType, gameUI)).runAsync(_ => ())
   }

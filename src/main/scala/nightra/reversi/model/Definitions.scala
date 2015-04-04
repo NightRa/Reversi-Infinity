@@ -76,7 +76,7 @@ case object Tie extends EndGame
 
 // ---------------------------------------------
 
-case class Position(row: Int, column: Int) {
+case class Position(row: Int, col: Int) {
 
   import Position._
 
@@ -84,9 +84,9 @@ case class Position(row: Int, column: Int) {
   def neighbors(boardSize: Int): List[Position] = {
     @tailrec
     def neighborsLoop(index: Int, acc: List[Position]): List[Position] = {
-      if (index < deltas.size) {
+      if (index < deltas.length) {
         val (dx, dy) = deltas(index)
-        val pos = Position(row + dx, column + dy)
+        val pos = Position(row + dx, col + dy)
         if (pos.inBounds(boardSize)) neighborsLoop(index + 1, pos :: acc)
         else neighborsLoop(index + 1, acc)
       } else {
@@ -96,9 +96,9 @@ case class Position(row: Int, column: Int) {
     neighborsLoop(0, Nil)
   }
 
-  def inBounds(boardSize: Int): Boolean = row >= 0 && row < boardSize && column >= 0 && column < boardSize
+  def inBounds(boardSize: Int): Boolean = row >= 0 && row < boardSize && col >= 0 && col < boardSize
 
-  def -(other: Position): (Int, Int) = (row - other.row, column - other.column)
+  def -(other: Position): (Int, Int) = (row - other.row, col - other.col)
 }
 
 object Position {

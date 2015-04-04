@@ -8,7 +8,7 @@ import nightra.reversi.model._
 import rx.core.{Obs, Var, Rx}
 
 class BoardUI(ctx: Context, bitmaps: Bitmaps, grid: GridLayout, boardProp: Rx[Board], boardSize: Int, squareClicked: Position => Unit) {
-  val tiles: Rx[Vector[Vector[SquareState]]] = Rx {
+  val tiles: Rx[Array[Array[SquareState]]] = Rx {
     boardProp().mobilityBoard
   }
 
