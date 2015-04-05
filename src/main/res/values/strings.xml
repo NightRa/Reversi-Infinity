@@ -4,5 +4,7 @@
     <string name="app_name">Android Reversi</string>
     <string name="action_settings">Settings</string>
     <string name="title">Reversi</string>
-
+    <string name="viewBoard">View the board</string>
+    <string name="restart">Play again</string>
+    <string name="gameOver">Game over</string>
 </resources>

@@ -3,7 +3,6 @@ package nightra.reversi.model
 import nightra.reversi.ai.Heuristic
 import nightra.reversi.model.BoardOptimized._
 import nightra.reversi.util.Collections._
-import Board._
 
 case class Board private[model](mat: Array[Array[Piece]], size: Int, blacks: Int, pieces: Int, stale: Boolean, turn: Player) {
   def whites = pieces - blacks
@@ -86,7 +85,7 @@ case class Board private[model](mat: Array[Array[Piece]], size: Int, blacks: Int
 
   lazy val heuristic = Heuristic.heuristic(this)
 
-  def winner: Option[EndGame] =
+  def isGameOver: Option[EndGame] =
     if (!isTerminal) None
     else {
       if (blacks > whites)

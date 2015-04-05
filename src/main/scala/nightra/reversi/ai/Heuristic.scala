@@ -24,7 +24,7 @@ object Heuristic {
 
   def heuristic(board: Board): Float = {
     if (board.isTerminal) {
-      board.winner match {
+      board.isGameOver match {
         case None => 0f
         case Some(Tie) => 0f
         case Some(Winner(Black)) => Float.PositiveInfinity

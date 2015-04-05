@@ -1,7 +1,7 @@
 package nightra.reversi.ui
 
-import android.app.Activity
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.GridLayout
 import android.util.DisplayMetrics
 import android.widget.TextView
@@ -9,31 +9,39 @@ import nightra.reversi.app.R
 import nightra.reversi.control.Game
 import nightra.reversi.image.Images
 import nightra.reversi.interplay._
+import nightra.reversi.model.Board
 import nightra.reversi.ui.game.{Bitmaps, GameUI}
 
 import scalaz.concurrent.Future
 
-class MainActivity extends Activity {
+class MainActivity extends FragmentActivity {
   var gameUI: GameUI = _
+  val boardSize = 8
+  val gameType = GameType(boardSize, HumanPlayer, LocalComputerPlayer(3))
+  def startGame(): Unit = Future(Game.startGame(gameType, gameUI)).runAsync(_ => ())
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
     val grid: GridLayout = findViewById(R.id.squareGrid).asInstanceOf[GridLayout]
-    val size = squareSize() / 8
+    val size = squareSize() / boardSize
     val bitmaps = loadBitmaps(size)
 
     val whiteScore = findViewById(R.id.whiteScore).asInstanceOf[TextView]
     val blackScore = findViewById(R.id.blackScore).asInstanceOf[TextView]
 
-    gameUI = new GameUI(this, bitmaps, whiteScore, blackScore, grid, 8, () => (), callback => runOnUiThread(new Runnable {
-      override def run(): Unit = callback()
-    }))
+    gameUI = new GameUI(this, bitmaps, whiteScore, blackScore, grid, boardSize, () => restart(),
+      callback => runOnUiThread(new Runnable {
+        override def run(): Unit = callback()
+      }))
 
-    val gameType = GameType(8, HumanPlayer, LocalComputerPlayer(3))
+    startGame()
+  }
 
-    Future(Game.startGame(gameType, gameUI)).runAsync(_ => ())
+  def restart(): Unit = {
+    gameUI.boardProp() = Board.initialBoard(boardSize)
+    startGame()
   }
 
   def loadBitmaps(size: Int): Bitmaps = {

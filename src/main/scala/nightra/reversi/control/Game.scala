@@ -19,10 +19,10 @@ object Game {
   @tailrec
   def runGame(blackPlayerRunner: PlayerRunner[_], whitePlayerRunner: PlayerRunner[_], gameType: GameType, board: Board, gameUI: GameUI): Unit = {
     val currentPlayer = board.turn
-    board.winner match {
+    board.isGameOver match {
       case Some(endGame) =>
         gameUI.onUI { () =>
-          gameUI.reportWinner(endGame, board.blacks, board.whites)
+          gameUI.gameOver(endGame)
         }
       case None =>
         val playInstructions = currentPlayer match {
