@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.GridLayout
 import android.util.DisplayMetrics
-import android.widget.TextView
+import android.widget.{ImageView, TextView}
 import nightra.reversi.app.R
 import nightra.reversi.control.Game
 import nightra.reversi.image.Images
@@ -30,6 +30,15 @@ class MainActivity extends FragmentActivity {
 
     val whiteScore = findViewById(R.id.whiteScore).asInstanceOf[TextView]
     val blackScore = findViewById(R.id.blackScore).asInstanceOf[TextView]
+
+    val whiteScoreImage = findViewById(R.id.whiteScoreImage).asInstanceOf[ImageView]
+    val blackScoreImage = findViewById(R.id.blackScoreImage).asInstanceOf[ImageView]
+    whiteScoreImage.getLayoutParams.height = size
+    whiteScoreImage.getLayoutParams.width = size
+    blackScoreImage.getLayoutParams.height = size
+    blackScoreImage.getLayoutParams.width = size
+    whiteScoreImage.requestLayout()
+    blackScoreImage.requestLayout()
 
     gameUI = new GameUI(this, bitmaps, whiteScore, blackScore, grid, boardSize, () => restart(),
       callback => runOnUiThread(new Runnable {
