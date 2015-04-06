@@ -16,7 +16,6 @@ case class Board private[model](mat: Array[Array[Piece]], size: Int, blacks: Int
   // Proof obligation: inBounds(pos)
   @inline
   def unsafeAt(pos: Position): Piece = mat(pos.row)(pos.col)
-
   //                                   ^ unsafe
 
   def setTurn(player: Player) = this.copy(turn = player)
@@ -37,8 +36,8 @@ case class Board private[model](mat: Array[Array[Piece]], size: Int, blacks: Int
         val flippedMat = applyFlips(size, mat, flipped, turn.piece)
 
         val newBlacks = turn match {
-          case Black => blacks + flipped.size + 1 // + 1 - new black placed at pos
-          case White => blacks - flipped.size // placed flippedSize white pieces, so there are that many less blacks.
+          case Black => blacks + flipped.length // flipped includes the newly placed piece.
+          case White => blacks - flipped.length + 1 // placed flippedSize white pieces, (whites - 1) black flipped.
         }
         Some(Board(flippedMat, size, newBlacks, pieces + 1, stale = false, turn.opposite))
       }
