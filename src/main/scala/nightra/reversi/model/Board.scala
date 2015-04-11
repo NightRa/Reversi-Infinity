@@ -2,7 +2,6 @@ package nightra.reversi.model
 
 import nightra.reversi.ai.Heuristic
 import nightra.reversi.model.BoardOptimized._
-import nightra.reversi.util.Collections._
 
 case class Board private[model](mat: Array[Array[Piece]], size: Int, blacks: Int, pieces: Int, stale: Boolean, turn: Player) {
   def whites = pieces - blacks
@@ -169,6 +168,8 @@ object Board {
     val pieces = mat.map(_.count(!_.isEmpty)).sum
     Board(mat, boardSize, blacks, pieces, stale, turn)
   }
+
+  def to2D(rowSize: Int, index: Int): (Int, Int) = (index / rowSize, index % rowSize)
 
   def none[A]: Option[A] = None
 }
