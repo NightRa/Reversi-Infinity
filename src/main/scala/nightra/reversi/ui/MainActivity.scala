@@ -1,10 +1,14 @@
 package nightra.reversi.ui
 
+import java.util.concurrent.atomic.AtomicBoolean
+
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.GridLayout
 import android.util.DisplayMetrics
-import android.widget.{ImageView, TextView}
+import android.view.View
+import android.view.View.OnClickListener
+import android.widget.{Button, ImageView, TextView}
 import nightra.reversi.app.R
 import nightra.reversi.control.Game
 import nightra.reversi.image.Images
@@ -18,7 +22,12 @@ class MainActivity extends FragmentActivity {
   var gameUI: GameUI = _
   val boardSize = 8
   val gameType = GameType(boardSize, HumanPlayer, LocalComputerPlayer(3))
-  def startGame(): Unit = Future(Game.startGame(gameType, gameUI)).runAsync(_ => ())
+  var stopGameLoop: AtomicBoolean = _
+
+  def startGame(): Unit = {
+    stopGameLoop = new AtomicBoolean(false)
+    Future.fork(Game.startGame(gameType, gameUI)).runAsyncInterruptibly(_ => (), stopGameLoop)
+  }
 
   override def onCreate(savedInstanceState: Bundle) {
     super.onCreate(savedInstanceState)
@@ -40,6 +49,13 @@ class MainActivity extends FragmentActivity {
     whiteScoreImage.requestLayout()
     blackScoreImage.requestLayout()
 
+    val newGame = findViewById(R.id.newGameButton).asInstanceOf[Button]
+    newGame.setOnClickListener(new OnClickListener {
+      override def onClick(v: View): Unit = {
+        restart()
+      }
+    })
+
     gameUI = new GameUI(this, bitmaps, whiteScore, blackScore, grid, boardSize, () => restart(),
       callback => runOnUiThread(new Runnable {
         override def run(): Unit = callback()
@@ -49,6 +65,7 @@ class MainActivity extends FragmentActivity {
   }
 
   def restart(): Unit = {
+    stopGameLoop.set(true)
     gameUI.boardProp() = Board.initialBoard(boardSize)
     startGame()
   }

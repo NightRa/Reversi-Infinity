@@ -29,8 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/squareGrid"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            android:padding="5dp"
+            android:layout_marginBottom="@dimen/scoreMargin"
             android:orientation="horizontal">
         <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
             <ImageView
@@ -70,5 +69,14 @@
         </FrameLayout>
     </LinearLayout>
 
+    <Button
+            android:id="@+id/newGameButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Game"
+            android:layout_below="@id/squareGrid"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            />
 
 </RelativeLayout>

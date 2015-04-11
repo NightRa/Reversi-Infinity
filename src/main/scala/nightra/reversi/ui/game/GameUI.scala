@@ -5,12 +5,12 @@ import android.content.DialogInterface
 import android.content.DialogInterface.OnClickListener
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.GridLayout
-import android.util.Log
 import android.view.Gravity
 import android.widget.TextView
 import nightra.reversi.app.R
 import nightra.reversi.control.{ExecutionError, InternalError}
 import nightra.reversi.model._
+import nightra.reversi.util.Log
 import rx.core.{Obs, Rx, Var}
 
 import scalaz.concurrent.Future
@@ -41,7 +41,7 @@ class GameUI(val ctx: FragmentActivity, bitmaps: Bitmaps, whiteScore: TextView, 
 
   def gameOver(endGame: EndGame): Unit = {
     // TODO: Report winner
-    Log.i("Reversi", s"The winner is: $endGame")
+    Log.i(s"The winner is: $endGame")
     reportWinner(endGame)
   }
 
@@ -76,9 +76,11 @@ class GameUI(val ctx: FragmentActivity, bitmaps: Bitmaps, whiteScore: TextView, 
     case Tie => s"Tie $blacks-$whites"
   }
 
-  def reportError(error: ExecutionError): Unit = error match {
-    case InternalError(e) => e.printStackTrace()
-    case _ => println(s"Error: \r\n$error")
+  def reportError(error: ExecutionError): Future[Unit] = Future.delay {
+    error match {
+      case InternalError(e) => e.printStackTrace()
+      case _ => Log.e(s"Error: \r\n$error")
+    }
   }
 
   def clickSquare(pos: Position): Unit = {

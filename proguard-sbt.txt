@@ -158,7 +158,7 @@
 # view res/layout/abc_action_menu_layout.xml #generated:17
 -keep class android.support.v7.widget.ActionMenuView { <init>(...); }
 
-# view res/layout/activity_main.xml #generated:32
+# view res/layout/activity_main.xml #generated:20
 -keep class android.support.v7.widget.GridLayout { <init>(...); }
 
 # view res/layout/abc_activity_chooser_view.xml #generated:19
@@ -170,10 +170,10 @@
 # view res/layout/abc_screen_toolbar.xml #generated:36
 -keep class android.support.v7.widget.Toolbar { <init>(...); }
 
-# view AndroidManifest.xml #generated:18
+# view AndroidManifest.xml #generated:16
 -keep class android.test.InstrumentationTestRunner { <init>(...); }
 
-# view AndroidManifest.xml #generated:9
+# view AndroidManifest.xml #generated:7
 -keep class nightra.reversi.ui.MainActivity { <init>(...); }
 
 -ignorewarnings
