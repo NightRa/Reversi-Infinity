@@ -9,7 +9,7 @@ import nightra.reversi.util.Log
 import scalaz.concurrent.Future
 import scalaz.{-\/, \/-}
 
-class AIPlayer(ai: AI) extends PlayerRunner[(Float, Move)] {
+class AIPlayer(ai: AI) extends PlayerRunner[(Long, Float, Move)] {
   def play = player => board => playResult(Future {
     // TODO: Remove time measuring debug
     val start = System.currentTimeMillis()
@@ -19,23 +19,25 @@ class AIPlayer(ai: AI) extends PlayerRunner[(Float, Move)] {
       case (score, Some((move, newBoard))) =>
         \/-(score, move)
     }
-    Log.d((System.currentTimeMillis() - start).toString)
-    res
+
+    val time = System.currentTimeMillis() - start
+    res.map(result => (time, result._1, result._2))
   })
 
   def selfReport = {
-    case (player, (score, move)) =>
+    case (player, (time, score, move)) =>
       playResult(Future.delay(\/- {
         val moveMessage = move match {
           case Pass => "passed"
           case Place(position) => s"moved to $position"
         }
+        Log.d(time.toString)
         Log.v(s"The computer ($player) $moveMessage")
         Log.v(s"The score is: $score")
       }))
   }
 
-  def toMove = _._2
+  def toMove = _._3
 }
 
 object AIPlayer {
