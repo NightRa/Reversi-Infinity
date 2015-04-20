@@ -85,14 +85,14 @@ public class BoardOptimized {
             for (int col = 0; col < board.size(); col++) {
                 Option<Board> placement = board.place(row, col);
                 if (placement.isDefined()) {
-                    possibleMovesAcc.add(new Tuple2<>(new Place(new Position(row, col)), placement.get()));
+                    possibleMovesAcc.add(new Tuple2<Move, Board>(new Place(new Position(row, col)), placement.get()));
                 }
             }
         }
         if (!board.stale() && possibleMovesAcc.isEmpty()) {
             @SuppressWarnings("unchecked")
             Tuple2<Move, Board>[] passArray = new Tuple2[1];
-            passArray[0] = new Tuple2<>(Pass$.MODULE$, board.passTurn());
+            passArray[0] = new Tuple2<Move, Board>(Pass$.MODULE$, board.passTurn());
             return passArray;
         } else {
             @SuppressWarnings("unchecked")
