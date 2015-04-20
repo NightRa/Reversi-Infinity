@@ -11,8 +11,6 @@ sealed trait ExecutionError
 case class InternalError(exception: Throwable) extends ExecutionError
 case class IllegalMove(move: RemoteMove) extends ExecutionError
 case class AIError(exception: Exception) extends ExecutionError
-case class InvalidRemoteFormat(fileContents: String) extends ExecutionError
-case class InvalidRemotePlayerPlayed(remoteMove: RemoteMove) extends ExecutionError
 
 trait PlayerRunner[A] {
   def play: Player => Board => PlayResult[A]
