@@ -1,7 +1,6 @@
 package nightra.reversi.control
 
 import nightra.reversi.control.Controller._
-import nightra.reversi.interplay.RemoteMove
 import nightra.reversi.model.{Board, Move, Player}
 
 import scalaz.concurrent.{Future, Task}
@@ -9,7 +8,7 @@ import scalaz.{-\/, EitherT, \/, \/-}
 
 sealed trait ExecutionError
 case class InternalError(exception: Throwable) extends ExecutionError
-case class IllegalMove(move: RemoteMove) extends ExecutionError
+case class IllegalMove(player: Player, move: Move) extends ExecutionError
 case class AIError(exception: Exception) extends ExecutionError
 
 trait PlayerRunner[A] {
@@ -42,7 +41,7 @@ object Controller {
 
   def makeMove(board: Board, player: Player, move: Move): PlayResult[Board] = {
     board.move(move) match {
-      case None => playResult(Future.now(-\/(IllegalMove(RemoteMove(player, move)))))
+      case None => playResult(Future.now(-\/(IllegalMove(player, move))))
       case Some(newBoard) =>
         playResult(Future.delay(\/-(newBoard))) // Set new board
     }
