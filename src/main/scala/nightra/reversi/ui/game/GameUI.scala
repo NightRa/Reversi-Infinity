@@ -40,7 +40,6 @@ class GameUI(val ctx: FragmentActivity, bitmaps: Bitmaps, whiteScore: TextView, 
   }
 
   def gameOver(endGame: EndGame): Unit = {
-    // TODO: Report winner
     Log.i(s"The winner is: $endGame")
     reportWinner(endGame)
   }
